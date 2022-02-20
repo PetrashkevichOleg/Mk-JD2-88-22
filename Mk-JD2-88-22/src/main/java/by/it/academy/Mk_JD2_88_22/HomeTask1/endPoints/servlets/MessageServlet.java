@@ -29,16 +29,20 @@ private static final String LOGIN="login";
     resp.setContentType("text/html;charset= UTF-8");
     String messageRow = req.getParameter(MESSAGE);
     String recipient= req.getParameter(RECIPIENT);
+    if (messageRow.isEmpty() || recipient.isEmpty()) {
+      RequestDispatcher request = req.getRequestDispatcher(NEXT_PATH);
+      request.forward(req, resp);
+    }else {
+      HttpSession session = req.getSession();
 
-    HttpSession session= req.getSession();
+      Message message = new Message((String) session.getAttribute(LOGIN), recipient, messageRow,
+          LocalDateTime.now().truncatedTo(
+              ChronoUnit.MINUTES));
 
-    Message message=new Message((String) session.getAttribute(LOGIN),recipient,messageRow, LocalDateTime.now().truncatedTo(
-        ChronoUnit.MINUTES));
-
-    messageService.putRecivedMessage(message);
-    RequestDispatcher request = req.getRequestDispatcher(NEXT_PATH);
-    request.forward(req,resp);
-
+      messageService.putRecivedMessage(message);
+      RequestDispatcher request = req.getRequestDispatcher(NEXT_PATH);
+      request.forward(req, resp);
+    }
 
 
 

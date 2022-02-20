@@ -42,7 +42,7 @@ public class SignUpServlet extends HttpServlet {
 
     if (lastName.isEmpty() || login.isEmpty() || firstName.isEmpty() || password.isEmpty()) {
       RequestDispatcher request = req.getRequestDispatcher(PATH);
-      request.include(req,resp);
+      request.forward(req,resp);
     } else {
 
       if (userService.getUserStorage().containsKey(login)) {

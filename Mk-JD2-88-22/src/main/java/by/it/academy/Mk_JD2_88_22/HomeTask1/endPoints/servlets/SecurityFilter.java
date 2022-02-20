@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebFilter(urlPatterns = {"/mess"})
+@WebFilter(urlPatterns = {"/message","/charts"})
 public class SecurityFilter implements Filter {
 
   @Override
@@ -29,10 +29,10 @@ public class SecurityFilter implements Filter {
     HttpServletRequest request = (HttpServletRequest) req;
     String contextPath = request.getContextPath();
     HttpSession session = request.getSession();
-    if ((session != null) && (session.getAttribute("user") != null)) {
+    if ((session != null) && (session.getAttribute("login") != null)) {
       chain.doFilter(req,resp);
     }else{
-      response.sendRedirect(contextPath+"view/signIn.jsp");
+      response.sendRedirect(contextPath+"/view/signIn.jsp");
     }
   }
 
